@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.7"
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+# command to run tests
+before_script:
+  - cd tests
+script:
+  - ./extract_test_golang.sh
+  - ./extract_test_java.sh
+  - ./extract_test_rust.sh

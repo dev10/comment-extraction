@@ -1,0 +1,17 @@
+T__0=1
+T__1=2
+T__2=3
+T__3=4
+T__4=5
+LINE_COMMENT=6
+BLOCK_COMMENT=7
+END_SYMBOL=8
+TEXT=9
+WS=10
+NL=11
+IGNORED=12
+'\n'=1
+'{'=2
+'\n//'=3
+'*/\n'=4
+'/**'=5
