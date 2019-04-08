@@ -1,9 +1,13 @@
 **Purpose**
 ===========
 
+
 To allow extraction of class and function comments 
 and output to Sphinx compatible rst files for later inclusion in Sphinx docs.
 
+**Build Status**
+
+[![Build Status](https://travis-ci.com/dev10/comment-extraction.svg?branch=master)](https://travis-ci.com/dev10/comment-extraction)
 
 **Go**
 ------
