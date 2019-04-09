@@ -17,12 +17,13 @@ from rust.RustCommentLexer import RustCommentLexer
 from rust.RustCommentParser import RustCommentParser
 from rust.RustRstListener import RustRstListener
 
+
 def main(argv):
     parser = argparse.ArgumentParser(description='generate rst files from source comments')
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-f', '--file', help='input source file')
     group.add_argument('-d', '--directory', help='input source directory')
-    parser.add_argument('-o','--output', help='the output directory', required=True)
+    parser.add_argument('-o', '--output', help='the output directory', required=True)
     parser.add_argument('-l', '--language',
                         required=True,
                         help='select programming language to parse',
@@ -56,25 +57,25 @@ def extract_from_file(file, args):
     if args.language == 'golang':
         print('using golang antlr parser')
         lang_parser = {'lexer': GolangCommentLexer,
-                  'parser': GolangCommentParser,
-                  'listener': GolangRstListener}
+                       'parser': GolangCommentParser,
+                       'listener': GolangRstListener}
     elif args.language == 'java':
         print('using java antlr parser')
         lang_parser = {'lexer': JavaCommentLexer,
-                  'parser': JavaCommentParser,
-                  'listener': JavaRstListener}
+                       'parser': JavaCommentParser,
+                       'listener': JavaRstListener}
     elif args.language == 'rust':
         print('using rust antlr parser')
         lang_parser = {'lexer': RustCommentLexer,
-                  'parser': RustCommentParser,
-                  'listener': RustRstListener}
+                       'parser': RustCommentParser,
+                       'listener': RustRstListener}
     else:
         print('unsupported language [%s]' % args.language)
         return
 
     # return
     input_filepath = file
-    in_file = FileStream(input_filepath)
+    in_file = FileStream(fileName=input_filepath, encoding='utf-8')
     lexer = lang_parser['lexer'](in_file)
     stream = CommonTokenStream(lexer)
     parser = lang_parser['parser'](stream)
@@ -88,7 +89,6 @@ def extract_from_file(file, args):
     url = create_github_file_url(clean_file_path, args.repo_url, args.commit_tag)
     rst = lang_parser['listener'](clean_file_path, output, url)
     walker = ParseTreeWalker()
-    print('sourceFile: ', tree)
     walker.walk(rst, tree)
 
     output.close()
