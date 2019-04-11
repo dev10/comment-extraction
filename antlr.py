@@ -1,7 +1,7 @@
 import argparse
 import glob
-import ntpath
 import os
+import re
 import sys
 from antlr4 import *
 # Golang parser imports
@@ -81,11 +81,10 @@ def extract_from_file(file, args):
     parser = lang_parser['parser'](stream)
 
     tree = parser.sourceFile()
-    new_file_name = get_new_filename(input_filepath, args.output)
+    clean_file_path = strip_path_prefix(input_filepath, args.strip_prefix)
+    new_file_name = get_new_filename(clean_file_path, args.output)
     output = open(new_file_name, 'w')
 
-    # rst = JavaRstListener(input_filepath, output)
-    clean_file_path = strip_path_prefix(input_filepath, args.strip_prefix)
     url = create_github_file_url(clean_file_path, args.repo_url, args.commit_tag)
     rst = lang_parser['listener'](clean_file_path, output, url)
     walker = ParseTreeWalker()
@@ -123,10 +122,8 @@ def extract_from_directory(directory, args):
         extract_from_file(filename, args)
 
 
-def get_new_filename(original, output, extension='.rst'):
-    new = ntpath.basename(original)
-    if new == '':
-        raise Exception('invalid file path given: ' + original)
+def get_new_filename(clean_file_path, output, extension='.rst'):
+    new = re.sub(r'[\\/]+', '_', clean_file_path)
     return os.path.join(output, new) + extension
 
 
