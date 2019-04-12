@@ -99,6 +99,8 @@ def create_github_file_url(clean_file_path, repo_base_url, commit_tag):
     # commit tag example: master
     # example output: https://github.com/Fantom-Foundation/jlachesis/blob/master/src/test/java/poset/PosetTest.java
 
+    if not clean_file_path.startswith('/'):
+        clean_file_path = '/' + clean_file_path
     url = repo_base_url + '/blob/' + commit_tag + clean_file_path
     print('setting file url to: ' + url)
     return url
